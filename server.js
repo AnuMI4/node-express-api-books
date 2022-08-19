@@ -13,7 +13,11 @@ app.get('/', (req, res) => {
 
 app.post("/books", async (req, res) => {
   const results = await db.createBook(req.body);
-  res.status(201).json({ id: results[0] });
+  res.status(201).json(
+    {
+       id: results[0],
+       message: "Book added successfully"
+    });
 });
 
 app.get("/books", async (req, res) => {
@@ -23,7 +27,11 @@ app.get("/books", async (req, res) => {
 
 app.put("/books/:id", async (req, res) => {
   const id = await db.updateBook(req.params.id, req.body);
-  res.status(200).json({ id });
+  res.status(200).json(
+    { 
+      id: req.params.id,
+      message: "Book updated successfully" 
+    });
 });
 
 app.delete("/books/:id", async (req, res) => {
