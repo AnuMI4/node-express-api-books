@@ -1,10 +1,10 @@
 const express = require('express');
 const app = express();
-const port = process.env.port || 3000;
+const port = 3000;
 const db = require("./db/books");
 const bodyParser = require("body-parser");
 
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
@@ -12,12 +12,18 @@ app.get('/', (req, res) => {
 });
 
 app.post("/books", async (req, res) => {
-  const results = await db.createBook(req.body);
-  res.status(201).json(
+  try {
+    const results = await db.createBook(req.body);
+    res.status(201).json(
     {
-       id: results[0],
-       message: "Book added successfully"
+      id: results[0],
+      message: "Book added successfully"
     });
+  } catch (error) {
+    res.status(400).json({
+      message: error.toString()
+    });
+  }
 });
 
 app.get("/books", async (req, res) => {
@@ -28,15 +34,20 @@ app.get("/books", async (req, res) => {
 app.put("/books/:id", async (req, res) => {
   const id = await db.updateBook(req.params.id, req.body);
   res.status(200).json(
-    { 
+    {
       id: req.params.id,
-      message: "Book updated successfully" 
+      message: "Book updated successfully"
     });
 });
 
 app.delete("/books/:id", async (req, res) => {
   await db.deleteBook(req.params.id);
   res.status(200).json({ success: true });
+});
+
+app.use((req, res) => {
+  res.status(404);
+  res.send('404 - Not Found');
 });
 
 app.listen(port, () => {
