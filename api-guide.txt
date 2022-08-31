@@ -1,0 +1,19 @@
+1. GET /books
+
+2. POST /books
+  {
+    "title": "Macbeth",
+    "author": "William Shakespeare",
+    "type": "Fiction",
+    "date": "2022-08-30T12:34:25.603Z"
+  }
+
+3. PUT /books/{id}
+ {
+    "title": "Hamlet",
+    "author": "William Shakespeare",
+    "type": "Fiction",
+    "date": "2022-08-31T10:59:58.194Z"
+  }
+
+4. DELETE /books/{id}
