@@ -3,9 +3,34 @@ const app = express();
 const port = 3000;
 const db = require("./db/books");
 const bodyParser = require("body-parser");
+const jwt = require("jsonwebtoken");
+const jwtToken = jwt.sign({ data: 'foobar' }, 'secret');
+
+function verifyToken(req, res, next) {
+  const bearerHeader = req.headers["authorization"];
+  if (bearerHeader === jwtToken) {
+    const bearerToken = bearerHeader;
+    req.token = bearerToken;
+    next();
+  } else {
+    res.sendStatus(403);
+  }
+}
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+app.post("/books/getToken", (req, res) => {
+  try {
+      res.json({
+        jwtToken
+      });
+  } catch (err) {
+    res.status(500).json({
+      message: err.toString()
+    });
+  }
+});
 
 app.get('/', (req, res) => {
   res.send('Books API');
@@ -40,9 +65,15 @@ app.put("/books/:id", async (req, res) => {
     });
 });
 
-app.delete("/books/:id", async (req, res) => {
-  await db.deleteBook(req.params.id);
-  res.status(200).json({ success: true });
+app.delete("/books/:id", verifyToken, async (req, res) => {
+  jwt.verify(req.token, 'secret', async (err) => {
+    try {
+      await db.deleteBook(req.params.id);
+      res.status(200).json({ success: true });
+    } catch (err) {
+      res.status(403)
+    }
+  });
 });
 
 app.use((req, res) => {
