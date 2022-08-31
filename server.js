@@ -71,7 +71,7 @@ app.delete("/books/:id", verifyToken, async (req, res) => {
       await db.deleteBook(req.params.id);
       res.status(200).json({ success: true });
     } catch (err) {
-      res.status(403)
+      res.status(403);
     }
   });
 });
@@ -82,5 +82,5 @@ app.use((req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`server started on port ${port}`)
+  console.log(`server started on port ${port}`);
 });
