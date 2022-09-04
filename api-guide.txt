@@ -5,7 +5,7 @@
     "title": "Macbeth",
     "author": "William Shakespeare",
     "type": "Fiction",
-    "dateAdded": "2022-08-30T12:34:25.603Z"
+    "dateAdded": "Sun Sep 04 20:23:44 PKT 2022"
   }
 
 3. PUT /books/{id}
@@ -13,7 +13,9 @@
     "title": "Hamlet",
     "author": "William Shakespeare",
     "type": "Fiction",
-    "dateAdded": "2022-08-31T10:59:58.194Z"
+    "dateAdded": "Sun Sep 04 20:53:22 PKT 2022"
   }
 
 4. DELETE /books/{id}
+
+5. POST /books/authToken

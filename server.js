@@ -20,7 +20,7 @@ function verifyToken(req, res, next) {
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.post("/books/getToken", (req, res) => {
+app.post("/books/authToken", (req, res) => {
   try {
       res.json({
         jwtToken
@@ -57,12 +57,22 @@ app.get("/books", async (req, res) => {
 });
 
 app.put("/books/:id", async (req, res) => {
-  const id = await db.updateBook(req.params.id, req.body);
-  res.status(200).json(
-    {
-      id: req.params.id,
-      message: "Book updated successfully"
-    });
+  try {
+    const id = await db.updateBook(req.params.id, req.body);
+    res.status(200).json(
+      {
+        id: req.params.id,
+        message: "Book updated successfully"
+      });
+  } catch (err) {
+    let errorString = err.toString();
+    console.log(errorString);
+    if(errorString.includes("Empty .update() call detected! Update data does not contain any values to update.")) {
+      res.status(415).json({
+        message: "Unsupported Media Type"
+      })
+    }
+  }
 });
 
 app.delete("/books/:id", verifyToken, async (req, res) => {
