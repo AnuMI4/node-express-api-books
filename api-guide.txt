@@ -17,5 +17,6 @@
   }
 
 4. DELETE /books/{id}
+(Requires Authorization Header e.g. "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZm9vYmFyIiwiaWF0IjoxNjY3MTM2OTE3fQ.ZmNkw6nD_RB98uuoJQMcVFw-BNllarmiDDmX6i38IpE")
 
 5. POST /books/authToken
