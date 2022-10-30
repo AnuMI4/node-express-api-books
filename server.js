@@ -13,7 +13,7 @@ function verifyToken(req, res, next) {
     req.token = bearerToken;
     next();
   } else {
-    res.sendStatus(403);
+    res.sendStatus(401);
   }
 }
 
@@ -81,7 +81,7 @@ app.delete("/books/:id", verifyToken, async (req, res) => {
       await db.deleteBook(req.params.id);
       res.status(200).json({ success: true });
     } catch (err) {
-      res.status(403);
+      console.log(err)
     }
   });
 });
